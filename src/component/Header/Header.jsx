@@ -15,6 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -98,8 +99,16 @@ function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Sign Up</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Sign In</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+      <Link to={"/auth/signup"}>
+        Sign Up
+      </Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to={"/auth/signin"}>
+        Sign In
+      </Link>
+      </MenuItem>
     </Menu>
   );
 
@@ -154,7 +163,10 @@ function Header() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            TechForing
+            
+      <Link to={"/"}>
+        TechForing
+      </Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
