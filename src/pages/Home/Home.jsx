@@ -1,8 +1,9 @@
+import AccordianParent from "../../component/Accordian/AccordianParent";
 
 function Home() {
     return (
         <div>
-            <h1>I am home page</h1>
+            <AccordianParent />
         </div>
     )
 }
