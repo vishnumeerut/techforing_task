@@ -17,7 +17,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../../context/user';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const Search = styled('div')(({ theme }) => ({
@@ -88,12 +87,11 @@ function Header() {
 
  async function handleUserLogout () {
      try{
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}user/logout`)
       setUserToken((prev) => (
         {...prev, token:""}
       ))
       navigator("/auth/signin")
-      toast.success(response.data.msg)
+      toast.success("Logout Successfully")
 
      }
      catch(error) {

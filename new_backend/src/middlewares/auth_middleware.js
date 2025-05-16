@@ -4,12 +4,14 @@ const { verifyToken } = require("../utils/auth");
 
 function isLogedIn(req, res, next) {
 
-        console.log("cookie is:->", req.cookies)
-        if(!req.cookies || !req.cookies.token){
-            console.log("inside if block")
-            return res.status(StatusCodes.UNAUTHORIZED).send({success:false, msg:"You are not allowed!"})
+
+          const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ msg: "No token provided" });
         }
-        const {token} =  req.cookies;
+
+        const token = authHeader.split(" ")[1];
         let decodeToken;
         try{
             decodeToken = verifyToken(token);

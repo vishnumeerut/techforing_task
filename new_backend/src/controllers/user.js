@@ -48,12 +48,7 @@ async function getUserByEmail(req, res) {
     });
 
     console.log("token is:-", token)
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
 
-    // Success response
     return res.status(StatusCodes.OK).json({
       success: true,
       data: token,
@@ -70,31 +65,10 @@ async function getUserByEmail(req, res) {
 }
 
 
-async function logoutUser(req, res) {
-  try {
-    // Clear the cookie named "token"
-    res.clearCookie("token", {
-      httpOnly: true,
-      sameSite: "strict",
-    });
 
-    return res.status(StatusCodes.OK).send({
-      success: true,
-      msg: "User logged out successfully",
-    });
-  } catch (error) {
-    console.log("Logout error:", error.message);
-
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      msg: "Something went wrong while logging out",
-    });
-  }
-}
 
 
 module.exports = {
   createUser,
   getUserByEmail,
-  logoutUser,
 };
