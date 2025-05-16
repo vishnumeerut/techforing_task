@@ -2,7 +2,7 @@
 const express = require("express")
 
 const apiRouter = express.Router();
-const v1Router = require("./v1");
+const v1Router = require("./v1/index")
 
 
 

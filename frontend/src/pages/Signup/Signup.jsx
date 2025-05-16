@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react"
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -6,6 +6,7 @@ function SignUp() {
 
   const initialState = {username:"", email:"", password:""}
   const [formData, setFormData] = useState(initialState)
+  const navigator = useNavigate()
 
 
   function handleFormData(e){
@@ -18,8 +19,9 @@ function SignUp() {
     e.preventDefault()
        try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}user/signup`, formData);
-      console.log("Server response:", response.data);
+      console.log("Server response:", response.data.data.username);
       toast.success(`${response.data.data.username} is new User`)
+      navigator("/auth/signin")
     } catch (error) {
       console.error("Error sending data:", error);
     }
