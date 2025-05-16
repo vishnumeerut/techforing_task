@@ -63,6 +63,7 @@ async function getUserByEmail(req, res) {
     return res.status(StatusCodes.OK).json({
       success: true,
       data: token,
+      msg:"Successfully Login",
     });
   } catch (error) {
     console.log("Catch block error:", error.message);

@@ -1,6 +1,42 @@
-import { Link } from "react-router-dom";
-
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import UserContext from "../../context/user";
 function SignIn() {
+
+    const initialState = {email:"", password:""}
+    const [formData, setFormData] = useState(initialState)
+    const navigator = useNavigate()
+
+    const {usertoken, setUserToken} = useContext(UserContext)
+    console.log("userToken is:-", usertoken)
+  
+  
+    function handleFormData(e){
+      const {name, value} = e.target;
+      setFormData((prev) => (
+        {...prev, [name]:value}
+      ))
+    }
+    async function handleFormSubmission(e) {
+      e.preventDefault()
+         try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}user/signin`, formData);
+        console.log("Token is:", response.data.data);
+        setUserToken((prev) => (
+          {...prev, token:response.data.data}
+        ))
+        toast.success(`${response.data.msg}`)
+        navigator("/createjobs")
+      } catch (error) {
+        console.error("Error sending data:", error);
+      }
+      setFormData(initialState)
+  
+    }
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
@@ -8,7 +44,7 @@ function SignIn() {
           Login Here
         </h1>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={(e) => handleFormSubmission(e)}>
           <div>
             <label
               htmlFor="email"
@@ -17,6 +53,8 @@ function SignIn() {
               Email
             </label>
             <input
+              onChange={(e) => handleFormData(e)}
+              value={formData.email}
               type="text"
               id="email"
               name="email"
@@ -34,6 +72,8 @@ function SignIn() {
               Password
             </label>
             <input
+              onChange={(e) => handleFormData(e)}
+              value={formData.password}
               type="password"
               id="password"
               name="password"
