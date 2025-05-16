@@ -67,6 +67,17 @@ async function createJob (req, res) {
   }
 };
 
+const getAllJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find().sort({ createdAt: -1 }); // latest jobs first
+    res.status(200).json({ success: true, count: jobs.length, jobs });
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch jobs" });
+  }
+};
+
 module.exports = {
   createJob,
+  getAllJobs,
 };

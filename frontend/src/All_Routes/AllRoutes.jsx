@@ -4,6 +4,7 @@ import Jobs from "../pages/Jobs/Jobs";
 import SignUp from "../pages/Signup/Signup";
 import SignIn from "../pages/Signin/Signin";
 import JobCreate from "../pages/Job_create";
+import AllJobs from "../pages/All_Jobs/All_Jobs";
 
 
 function AllRoutes () {
@@ -14,6 +15,7 @@ function AllRoutes () {
             <Route path="/auth/signup" element={<SignUp />}/>
             <Route path="/auth/signin" element={<SignIn />}/>
             <Route path="/createjobs" element={<JobCreate />}/>
+            <Route path="/alljobs" element={<AllJobs />}/>
         </Routes>
     )
 }

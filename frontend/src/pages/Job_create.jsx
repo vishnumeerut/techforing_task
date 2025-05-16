@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import UserContext from "../context/user";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function JobCreate() {
     const {usertoken} = useContext(UserContext)
@@ -34,7 +35,6 @@ console.log("job data  is:-", formData)
       },
     });
       console.log("Job Created:", res.data);
-      // alert("Job created successfully!");
       toast.success(res.data.msg)
       setFormData(initialState);
     } catch (error) {
@@ -44,8 +44,8 @@ console.log("job data  is:-", formData)
 
   return (
     <div class="max-w-2xl mx-auto p-4 sm:p-8 bg-white rounded-lg shadow-lg mt-6">
-      <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center text-blue-600">
-        Create a New Job
+      <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-600">
+        Create a New Job  <span className="bg-blue-500 px-2 py-1 rounded-2xl text-xl text-white cursor-pointer">  <Link to={"/alljobs"}>View All Jobs</Link> </span>
       </h2>
     <form className="space-y-4" onSubmit={handleSubmit}>
       {/* Job Title */}
