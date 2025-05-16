@@ -1,6 +1,32 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react"
+import axios from "axios";
+import toast from "react-hot-toast";
 function SignUp() {
+
+  const initialState = {username:"", email:"", password:""}
+  const [formData, setFormData] = useState(initialState)
+
+
+  function handleFormData(e){
+    const {name, value} = e.target;
+    setFormData((prev) => (
+      {...prev, [name]:value}
+    ))
+  }
+  async function handleFormSubmission(e) {
+    e.preventDefault()
+       try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}user/signup`, formData);
+      console.log("Server response:", response.data);
+      toast.success(`${response.data.data.username} is new User`)
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+    setFormData(initialState)
+
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
@@ -8,7 +34,7 @@ function SignUp() {
           Register Here
         </h1>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={(e) => handleFormSubmission(e)}>
           <div>
             <label
               htmlFor="username"
@@ -17,6 +43,8 @@ function SignUp() {
               Username
             </label>
             <input
+              onChange={(e) => handleFormData(e)}
+              value={formData.username}
               type="text"
               id="username"
               name="username"
@@ -34,6 +62,8 @@ function SignUp() {
               Email
             </label>
             <input
+              onChange={(e) => handleFormData(e)}
+              value={formData.email}
               type="text"
               id="email"
               name="email"
@@ -51,6 +81,8 @@ function SignUp() {
               Password
             </label>
             <input
+              onChange={(e) => handleFormData(e)}
+              value={formData.password}
               type="password"
               id="password"
               name="password"
