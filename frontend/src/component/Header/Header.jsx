@@ -15,7 +15,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import UserContext from '../../context/user';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -47,7 +50,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -61,6 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const {usertoken, setUserToken} = React.useContext(UserContext)
+  const navigator = useNavigate()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -82,6 +86,20 @@ function Header() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+ async function handleUserLogout () {
+     try{
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}user/logout`)
+      setUserToken((prev) => (
+        {...prev, token:""}
+      ))
+      navigator("/auth/signin")
+      toast.success(response.data.msg)
+
+     }
+     catch(error) {
+      console.log("error while logout user:-", error)
+     }
+  }
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -104,11 +122,18 @@ function Header() {
         Sign Up
       </Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      {
+        (usertoken.token.length > 1) ?
+         <MenuItem onClick={handleMenuClose}>
+        <Link onClick={() => handleUserLogout()}>
+        Logout
+      </Link>
+      </MenuItem> : <MenuItem onClick={handleMenuClose}>
         <Link to={"/auth/signin"}>
         Sign In
       </Link>
       </MenuItem>
+      }
     </Menu>
   );
 

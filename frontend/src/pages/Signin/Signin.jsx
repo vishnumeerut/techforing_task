@@ -10,7 +10,6 @@ function SignIn() {
     const navigator = useNavigate()
 
     const {usertoken, setUserToken} = useContext(UserContext)
-    console.log("userToken is:-", usertoken)
   
   
     function handleFormData(e){

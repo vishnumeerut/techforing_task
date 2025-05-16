@@ -10,21 +10,15 @@ async function createUser(req, res) {
     const data = await User.create({ ...userdetails, password: hashpassword });
     return res.status(StatusCodes.CREATED).send({ success: true, data: data });
   } catch (error) {
-    console.log("error is:-", error.message);
     return res.send({ msg: error.message });
   }
 }
 async function getUserByEmail(req, res) {
   try {
-    console.log("login data is:-", req.body);
 
     const { email, password } = req.body;
 
     if (!email || !password) {
-      // return res.status(StatusCodes.BAD_REQUEST).send({
-      //   success: false,
-      //   msg: "Email and password are required",
-      // });
       return res.json({msg:"Email and password are required"})
     }
 
@@ -75,7 +69,32 @@ async function getUserByEmail(req, res) {
   }
 }
 
+
+async function logoutUser(req, res) {
+  try {
+    // Clear the cookie named "token"
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+    });
+
+    return res.status(StatusCodes.OK).send({
+      success: true,
+      msg: "User logged out successfully",
+    });
+  } catch (error) {
+    console.log("Logout error:", error.message);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      msg: "Something went wrong while logging out",
+    });
+  }
+}
+
+
 module.exports = {
   createUser,
   getUserByEmail,
+  logoutUser,
 };

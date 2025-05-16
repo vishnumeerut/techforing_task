@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import UserContext from "../context/user";
+
 function JobCreate() {
+      const {usertoken, setUserToken} = useContext(UserContext)
+
   return (
     <div class="max-w-2xl mx-auto p-4 sm:p-8 bg-white rounded-lg shadow-lg mt-6">
       <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center text-blue-600">
@@ -130,12 +135,15 @@ function JobCreate() {
 
         {/* <!-- Submit Button --> */}
         <div class="text-center">
-          <button
+          {
+            (usertoken.token.length > 1) ?  <button
             type="submit"
             class="bg-blue-600 text-white font-semibold px-6 py-2 rounded hover:bg-blue-700 transition duration-300"
           >
             Create Job
-          </button>
+          </button> : null
+          }
+
         </div>
       </form>
     </div>
